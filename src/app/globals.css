@@ -1,26 +1,105 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Brand palette taken from the Lumos logo: sage script on linen, with sand and grey-blue washes. */
+@theme {
+  --color-ivory: #f7f3ec;
+  --color-linen: #ede6dc;
+  --color-sand: #d6c3aa;
+  --color-sand-dark: #b89f80;
+  --color-sage: #5a7054;
+  --color-sage-dark: #45573f;
+  --color-sage-light: #a9b9a2;
+  --color-mist: #bfc7c8;
+  --color-slate: #59677a;
+  --color-charcoal: #2c2e30;
+  --color-muted: #5f5e5a;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ivory text-charcoal font-sans antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif font-medium tracking-tight text-charcoal;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-sage;
+  }
+  ::selection {
+    @apply bg-sage-light/60;
+  }
+}
+
+@utility container-x {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+}
+
+@utility eyebrow {
+    @apply text-xs font-medium uppercase tracking-[0.3em] text-sage;
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-medium tracking-wide transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+@utility btn-primary {
+    @apply btn bg-sage text-ivory hover:bg-sage-dark;
+}
+
+@utility btn-outline {
+    @apply btn border border-charcoal/30 text-charcoal hover:border-sage hover:bg-sage hover:text-ivory;
+}
+
+@utility btn-light {
+    @apply btn border border-ivory/70 text-ivory hover:bg-ivory hover:text-charcoal;
+}
+
+@utility field {
+    @apply w-full rounded-none border-0 border-b border-charcoal/25 bg-transparent px-0 py-3 text-base text-charcoal placeholder:text-muted/70 focus:border-sage focus:ring-0 focus:outline-none;
+}
+
+/* Scroll reveal: elements start hidden only once JS has marked the page as ready. */
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.js-reveal [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js-reveal [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
